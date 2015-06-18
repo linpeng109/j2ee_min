@@ -1,0 +1,324 @@
+description = 'J2ee min by Gradle'
+
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'war'
+apply plugin: 'com.bmuschko.tomcat'
+apply plugin: 'com.bmuschko.cargo'
+apply plugin: 'com.bmuschko.cargo-base'
+
+/**
+ * tomca描述
+ */
+buildscript {
+    repositories {
+        jcenter()
+    }
+
+    dependencies {
+        classpath 'com.bmuschko:gradle-tomcat-plugin:2.2.1'
+    }
+}
+
+/**
+ * cargo描述
+ */
+buildscript {
+    repositories {
+        jcenter()
+    }
+
+    dependencies {
+        classpath 'com.bmuschko:gradle-cargo-plugin:2.1'
+    }
+}
+
+//sourceCompatibility = 1.5
+version = '2015.05.12'
+
+/**
+ * 包依赖库描述
+ */
+repositories {
+    mavenCentral()
+    ivy {
+        url "/home/linpeng109/workspace/ivy_repository"
+    }
+}
+
+/**
+ * 包依赖性描述
+ */
+dependencies {
+    compile "axis:axis:1.4"
+    compile "axis:axis-jaxrpc:1.4"
+    compile "org.apache.activemq:activemq-all:5.11.1"
+    compile "org.apache.cxf:apache-cxf:3.1.1"
+    compile "org.bouncycastle:bcprov-jdk15on:1.52"
+
+    def blazedsVersion = '4.7.0'
+    compile "org.apache.flex.blazeds:flex-messaging-core:$blazedsVersion"
+    compile "org.apache.flex.blazeds:flex-messaging-common:$blazedsVersion"
+    compile "org.apache.flex.blazeds:flex-messaging-opt:$blazedsVersion"
+    compile "org.apache.flex.blazeds:flex-messaging-opt-tomcat7:$blazedsVersion"
+    compile "org.apache.flex.blazeds:flex-messaging-proxy:$blazedsVersion"
+    compile "org.apache.flex.blazeds:flex-messaging-remoting:$blazedsVersion"
+    compile "org.apache.flex.blazeds:blazeds:$blazedsVersion"
+
+    /**
+     *  The Apache Cassandra Project develops a highly scalable second-generation distributed database, bringing
+     *  together Dynamo's fully distributed design and Bigtable's ColumnFamily-based data model.
+     */
+    def cassandraVersion = '2.2.0-rc1'
+    compile "org.apache.cassandra:cassandra-all:$cassandraVersion"
+
+    compile "cglib:cglib-nodep:3.1"
+
+    compile "org.apache.ftpserver:ftpserver:1.0.6"
+
+    compile "org.apache.hadoop:hadoop-examples:1.2.1"
+
+    compile "org.httpunit:httpunit:1.7.2"
+
+    def hibernateVersion = '4.3.10.Final'
+    compile "org.hibernate:hibernate-core:$hibernateVersion"
+    compile "org.hibernate:hibernate-c3p0:$hibernateVersion"
+    compile "org.hibernate:hibernate-ehcache:$hibernateVersion"
+    compile "org.hibernate:hibernate-entitymanager:$hibernateVersion"
+    compile "org.hibernate:hibernate-envers:$hibernateVersion"
+    compile "org.hibernate:hibernate-testing:$hibernateVersion"
+    compile "org.hibernate:hibernate-search-engine:5.3.0.Final"
+    compile "org.hibernate:hibernate-oscache:3.6.10.Final"
+
+    /**
+     * Javassist (JAVA programming ASSISTant) makes Java bytecode manipulation simple.
+     * It is a class library for editing bytecodes in Java.
+     */
+    compile "org.javassist:javassist:3.19.0-GA"
+
+/**
+ * Jaxen is a universal Java XPath engine.
+ */
+
+    compile "jaxen:jaxen:1.1.6"
+
+    compile "jep:jep:java-3.4-trial"
+
+/**
+ * jPOS is an ISO-8583 based financial transaction library/framework that can be customized
+ * and extended in order to implement financial interchanges.
+ */
+    compile "org.jpos:jpos:2.0.2"
+
+/**
+ * JSON is a light-weight, language independent, data interchange format.
+ */
+    compile "org.json:json:20141113"
+    compile "mysql:mysql-connector-java:5.1.35"
+
+    /**
+     * Apache POI - Java API To Access Microsoft Format Files
+     */
+    def poiVersion = '3.12'
+    compile "org.apache.poi:poi:$poiVersion"
+    compile "org.apache.poi:poi-ooxml:$poiVersion"
+    compile "org.apache.poi:poi-scratchpad:$poiVersion"
+
+    /**
+     * quartz
+     */
+    def quartzVersion = '2.2.1'
+    compile "org.quartz-scheduler:quartz:$quartzVersion"
+
+    /**
+     * spring
+     */
+    def springVersion = '4.1.6.RELEASE'
+    compile "org.springframework:spring-core:$springVersion"
+    compile "org.springframework:spring-context:$springVersion"
+    compile "org.springframework:spring-context-support:$springVersion"
+    compile "org.springframework:spring-jms:$springVersion"
+    compile "org.springframework:spring-orm:$springVersion"
+    compile "org.springframework:spring-test:$springVersion"
+    compile "org.springframework:spring-web:$springVersion"
+    compile "org.springframework:spring-webmvc:$springVersion"
+    compile "org.springframework:spring-instrument-tomcat:$springVersion"
+    compile "org.springframework:spring-messaging:$springVersion"
+
+    /**
+     * spring.batch
+     */
+    def springbatchVersion = '3.0.4.RELEASE'
+    compile "org.springframework.batch:spring-batch-core:$springbatchVersion"
+    compile "org.springframework.batch:spring-batch-test:$springbatchVersion"
+
+    /**
+     * spring.data
+     */
+    compile "org.springframework.data:spring-data-hadoop:2.2.0.RELEASE"
+    compile "org.springframework.data:spring-data-cassandra:1.2.0.RELEASE"
+    compile "org.springframework.data:spring-data-redis:1.5.0.RELEASE"
+
+    /*自维护*/
+    compile "org.springframework.flex:spring-flex-core:1.5.3.RELEASE"
+
+    def springIntegrationVersion = '4.1.5.RELEASE'
+    compile "org.springframework.integration:spring-integration-core:$springIntegrationVersion"
+    compile "org.springframework.integration:spring-integration-jms:$springIntegrationVersion"
+    compile "org.springframework.integration:spring-integration-jdbc:$springIntegrationVersion"
+    compile "org.springframework.integration:spring-integration-file:$springIntegrationVersion"
+    compile "org.springframework.integration:spring-integration-feed:$springIntegrationVersion"
+    compile "org.springframework.integration:spring-integration-ftp:$springIntegrationVersion"
+    compile "org.springframework.integration:spring-integration-stream:$springIntegrationVersion"
+    compile "org.springframework.integration:spring-integration-http:$springIntegrationVersion"
+    compile "org.springframework.integration:spring-integration-mail:$springIntegrationVersion"
+    compile "org.springframework.integration:spring-integration-ws:$springIntegrationVersion"
+    compile "org.springframework.integration:spring-integration-xmpp:$springIntegrationVersion"
+    compile "org.springframework.integration:spring-integration-event:$springIntegrationVersion"
+    compile "org.springframework.integration:spring-integration-ip:$springIntegrationVersion"
+    compile "org.springframework.integration:spring-integration-test:$springIntegrationVersion"
+    compile "org.springframework.integration:spring-integration-syslog:$springIntegrationVersion"
+    compile "org.springframework.integration:spring-integration-security:$springIntegrationVersion"
+    compile "org.springframework.integration:spring-integration-websocket:$springIntegrationVersion"
+    compile "org.springframework.integration:spring-integration-groovy:$springIntegrationVersion"
+
+    /**
+     * spring.security
+     */
+    def springSecurityVersion = '4.0.1.RELEASE'
+    compile "org.springframework.security:spring-security-core:$springSecurityVersion"
+    compile "org.springframework.security:spring-security-web:$springSecurityVersion"
+    compile "org.springframework.security:spring-security-taglibs:$springSecurityVersion"
+    compile "org.springframework.security:spring-security-config:$springSecurityVersion"
+    compile "org.springframework.security:spring-security-cas:$springSecurityVersion"
+    compile "org.springframework.security:spring-security-samples-cas:3.0.7.RELEASE"
+    compile "org.springframework.security:spring-security-cas-client:3.0.7.RELEASE"
+
+    /**
+     * spring.ws
+     */
+    def springwsVersion = '2.1.4.RELEASE'
+    compile "org.springframework.ws:spring-ws:$springwsVersion"
+
+    /**
+     * slf4j
+     */
+    def slf4jVersion = '1.7.12'
+    compile "org.slf4j:jcl-over-slf4j:$slf4jVersion"
+    compile "org.slf4j:slf4j-log4j12:$slf4jVersion"
+
+    /**
+     * struts2
+     */
+    def struts2Version = '2.3.24'
+    compile "org.apache.struts:struts2-core:$struts2Version"
+    compile "org.apache.struts:struts2-spring-plugin:$struts2Version"
+    compile "org.apache.struts:struts2-junit-plugin:$struts2Version"
+    compile "org.apache.struts:struts2-jfreechart-plugin:$struts2Version"
+    compile "org.apache.struts:struts2-dwr-plugin:$struts2Version"
+    compile "org.apache.struts:struts2-json-plugin:$struts2Version"
+
+    /**
+     * xbean-spring provides a schema-driven proprietary namespace handler for spring contexts
+     */
+    compile "org.apache.xbean:xbean-spring:4.3"
+
+    /**
+    * Xerces2 is the next generation of high performance, fully compliant XML parsers in the Apache Xerces family.
+    */
+    compile "xerces:xercesImpl:2.11.0"
+
+    /**
+     * XStream extension for Hibernate 3/4 to untie Java objects from Hibernate.
+     */
+    def xstreamVersion ='1.4.8'
+    compile "com.thoughtworks.xstream:xstream:$xstreamVersion"
+    compile "com.thoughtworks.xstream:xstream-hibernate:$xstreamVersion"
+
+    /**
+     * RXTX is a native lib providing serial and parallel communication for the Java Development Toolkit (JDK).
+     */
+    compile "org.rxtx:rxtx:2.1.7"
+
+    /**
+     * 二维码
+     */
+    def zxingVersion = '3.2.0'
+    compile "com.google.zxing:core:$zxingVersion"
+    compile "com.google.zxing:javase:$zxingVersion"
+
+    /**
+     * junit
+     */
+    def junitVersion = '4.12'
+    testCompile group: "junit", name: "junit", version: "$junitVersion"
+
+    /**
+     * Tomcat-embed plugin
+     */
+    def tomcatVersion = '7.0.59'
+    tomcat "org.apache.tomcat.embed:tomcat-embed-core:${tomcatVersion}",
+            "org.apache.tomcat.embed:tomcat-embed-logging-juli:${tomcatVersion}",
+            "org.apache.tomcat.embed:tomcat-embed-jasper:${tomcatVersion}"
+
+    /**
+     * Cargo plugin
+     */
+    def cargoVersion = '1.4.5'
+    cargo "org.codehaus.cargo:cargo-core-uberjar:$cargoVersion",
+            "org.codehaus.cargo:cargo-ant:$cargoVersion"
+
+}
+
+/**
+ * configurations
+ */
+configurations {
+    compile.exclude module: "logback-classic"
+    compile.exclude module: "slf4j-jdk14"
+    compile.exclude module: "jetty"
+    compile.exclude module: "jetty-util"
+    compile.exclude module: "jsp-2.1"
+    compile.exclude module: "jsp-api-2.1"
+    compile.exclude module: "servlet-api-2.1"
+    compile.exclude module: "jasper-compiler"
+    compile.exclude module: "jasper-runtime"
+    compile.exclude module: "slf4j-log4j12"
+    compile.exclude module: "tomcat-catalina"
+}
+
+/*源代码配置 */
+sourceSets {
+
+}
+
+/**
+ * jar包配置
+ */
+jar {
+    baseName = 'j2ee_min'
+    version = '2015.06.12'
+}
+
+/*war包配置*/
+
+/**
+ * tomcat plugin配置
+ */
+tomcat {
+
+}
+
+/**
+ * 创建sourceSets目录结构
+ */
+task createSourceSets {
+    war.each {
+        project.mkdir(webAppDir)
+    }
+    sourceSets.each {
+        it.allSource.srcDirs.each {
+            project.mkdir(it.absolutePath)
+        }
+    }
+}

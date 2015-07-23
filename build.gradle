@@ -34,7 +34,7 @@ buildscript {
 }
 
 //sourceCompatibility = 1.5
-version = '2015.07.22'
+version = '2015.07.22_master'
 
 /**
  * 包依赖库描述
